@@ -71,12 +71,75 @@ export class LoginComponent implements OnInit {
     }
 
     loginFacebook() {
+        var myjs = this;
         firebase.login({
             type: firebase.LoginType.FACEBOOK
         }).then(function (fb_result) {
-                console.log('facebook', fb_result);
                 var fb_access_token = fb_result.providers[1].token;
+                console.log('fb_result', fb_result);
+                myjs.router.navigate(["/home"]);
                 // next: add code for checking if user is new or not
+                firebase.query(
+                    function (firebase_result) {
+
+                        if (!firebase_result.error) {
+
+                            if (firebase_result.value == null) { //user doesn't exist yet
+
+                                //next: add code for saving the data for new user
+                                /*var user_data = {
+                                    'uid': fb_result.uid,
+                                    'user_name': fb_result.name,
+                                    'profile_photo': fb_result.profileImageURL
+                                };
+
+                                http.getJSON('https://graph.facebook.com/me?access_token=' + fb_access_token)
+                                    .then(function(r){
+
+                                        user_data.id = r.id; // facebook user ID for this specific app
+
+                                        // create new user
+                                        firebase.push(
+                                            '/users',
+                                            user_data
+                                        ).then(
+                                            function (result) {
+
+                                                var user = {};
+                                                user[result.key] = user_data; // the key is the property containing the user's data
+                                                // store user's data locally
+                                                applicationSettings.setString('user_key', result.key);
+                                                applicationSettings.setString('user', JSON.stringify(user));
+                                                applicationSettings.setString('fb_token', fb_access_token);
+                                            }
+                                        );
+
+                                    });*/
+
+                            } else {
+                                // user already exists
+                                console.log('firebase_result.value', firebase_result.value);
+                            }
+                        }
+
+                    },
+                    '/users',
+                    {
+                        singleEvent: true, // for checking if the value exists (return the whole data)
+                        orderBy: { // the property in each of the objects in which to perform the query
+                            type: firebase.QueryOrderByType.CHILD,
+                            value: 'uid'
+                        },
+                        range: { // the comparison operator
+                            type: firebase.QueryRangeType.EQUAL_TO,
+                            value: fb_result.uid
+                        },
+                        limit: { // limit to only return the first result
+                            type: firebase.QueryLimitType.FIRST,
+                            value: 1
+                        }
+                    }
+                );
             }, function (err) {
                 console.log('error logging in to facebook: ', err);
             }
