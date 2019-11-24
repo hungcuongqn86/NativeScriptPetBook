@@ -4,6 +4,7 @@ import {alert, prompt} from "tns-core-modules/ui/dialogs";
 import {Page} from "tns-core-modules/ui/page";
 import {User} from "../shared/user.model";
 import {UserService} from "../shared/user.service";
+import {appName} from "../const";
 
 @Component({
     selector: "AuthLogin",
@@ -11,6 +12,7 @@ import {UserService} from "../shared/user.service";
     styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+    appName = appName;
     isLoggingIn = true;
     user: User;
 
@@ -31,7 +33,6 @@ export class LoginComponent implements OnInit {
     }
 
     submit() {
-        console.log(this.user);
         if (!this.user.email || !this.user.password) {
             this.alert("Please provide both an email address and password.");
             return;
@@ -90,7 +91,7 @@ export class LoginComponent implements OnInit {
 
     alert(message: string) {
         return alert({
-            title: "APP NAME",
+            title: appName,
             okButtonText: "OK",
             message: message
         });
