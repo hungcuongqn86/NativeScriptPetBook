@@ -57,6 +57,10 @@ export class LoginComponent implements OnInit {
             });
     }
 
+    sloggin() {
+
+    }
+
     register() {
 
     }
