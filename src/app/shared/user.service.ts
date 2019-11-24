@@ -1,7 +1,13 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {User} from "./user.model";
-import {backendUrl, apiV1Url} from  "../const";
+import {backendUrl, apiV1Url} from "../const";
+
+const httpOptions = {
+    headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+    })
+};
 
 @Injectable()
 export class UserService {
@@ -11,13 +17,7 @@ export class UserService {
     }
 
     login(data: User) {
-        let options = this.createRequestOptions();
-        return this.http.post(this.serverUrl + `login`, {data}, {headers: options});
-    }
-
-    private createRequestOptions() {
-        return new HttpHeaders({
-            "Content-Type": "application/json"
-        });
+        const url = this.serverUrl + `login`;
+        return this.http.post(url, data, httpOptions);
     }
 }

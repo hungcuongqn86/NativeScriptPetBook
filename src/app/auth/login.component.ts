@@ -49,8 +49,10 @@ export class LoginComponent implements OnInit {
         this.userService
             .login(this.user)
             .subscribe(res => {
+                console.log(res);
                 this.router.navigate(["/home"]);
             }, (error) => {
+                console.log(error);
                 this.alert('Đăng nhập không thành công!');
             });
     }
