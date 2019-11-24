@@ -24,7 +24,7 @@
 
         <Button [text]="isLoggingIn ? 'Log In' : 'Sign Up'" (tap)="submit()" class="btn btn-primary m-t-20"></Button>
         <Label *ngIf="isLoggingIn" text="Forgot your password?" class="login-label" (tap)="forgotPassword()"></Label>
-        <Button [text]="'Facebook'" (tap)="sloggin()" class="btn btn-primary btn-facebook m-t-20"></Button>
+        <Button [text]="'Facebook'" (tap)="loginFacebook()" class="btn btn-primary btn-facebook m-t-20"></Button>
     </StackLayout>
 
     <Label class="login-label sign-up-label" (tap)="toggleForm()">

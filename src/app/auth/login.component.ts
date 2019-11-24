@@ -6,6 +6,8 @@ import {User} from "../shared/user.model";
 import {UserService} from "../shared/user.service";
 import {appName} from "../const";
 
+const firebase = require("nativescript-plugin-firebase");
+
 @Component({
     selector: "AuthLogin",
     templateUrl: "./login.component.html",
@@ -25,7 +27,18 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
+        firebase.init({
+            persist: true,
+            // Optionally pass in properties for database, authentication and cloud messaging,
+            // see their respective docs.
+        }).then(
+            () => {
+                console.log("firebase.init done");
+            },
+            error => {
+                console.log(`firebase.init error: ${error}`);
+            }
+        );
     }
 
     toggleForm() {
@@ -57,8 +70,17 @@ export class LoginComponent implements OnInit {
             });
     }
 
-    sloggin() {
-
+    loginFacebook() {
+        firebase.login({
+            type: firebase.LoginType.FACEBOOK
+        }).then(function (fb_result) {
+                console.log('facebook', fb_result);
+                var fb_access_token = fb_result.providers[1].token;
+                // next: add code for checking if user is new or not
+            }, function (err) {
+                console.log('error logging in to facebook: ', err);
+            }
+        );
     }
 
     register() {
