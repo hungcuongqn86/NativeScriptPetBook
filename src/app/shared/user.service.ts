@@ -1,5 +1,6 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Observable} from 'rxjs';
 import {User} from "./user.model";
 import {backendUrl, apiV1Url} from "../const";
 
@@ -16,7 +17,7 @@ export class UserService {
     constructor(private http: HttpClient) {
     }
 
-    login(data: User) {
+    login(data: User): Observable<any> {
         const url = this.serverUrl + `login`;
         return this.http.post(url, data, httpOptions);
     }

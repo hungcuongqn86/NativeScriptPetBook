@@ -1,4 +1,15 @@
 import {Component, OnInit, ElementRef, ViewChild} from "@angular/core";
+import {
+    getBoolean,
+    setBoolean,
+    getNumber,
+    setNumber,
+    getString,
+    setString,
+    hasKey,
+    remove,
+    clear
+} from "tns-core-modules/application-settings";
 import {Router} from "@angular/router";
 import {alert, prompt} from "tns-core-modules/ui/dialogs";
 import {Page} from "tns-core-modules/ui/page";
@@ -62,8 +73,13 @@ export class LoginComponent implements OnInit {
         this.userService
             .login(this.user)
             .subscribe(res => {
-                console.log(res);
-                this.router.navigate(["/home"]);
+                if (res.status) {
+                    console.log(res);
+                    setString("access_token", res.access_token)
+                    this.router.navigate(["/home"]);
+                } else {
+                    this.alert('Đăng nhập không thành công!');
+                }
             }, (error) => {
                 console.log(error);
                 this.alert('Đăng nhập không thành công!');
